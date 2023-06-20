@@ -8,13 +8,25 @@ using System.Threading.Tasks;
 
 namespace Prompts 
 {
+    public static class MainSt
+    {
+        public static string oneCan = "";
+        public static string twoCans = "";
+        public static string noCan = "";
+    }
     public static class Movement
     {
         public static string Moved = "Przemieszczono się do lokacji ";
         public static string NotMoved = "Nie udało się przemieścić";
     }
     public static class Fight{ }
-    public static class Shop{ }
+    public static class Shop
+    {
+        public static string ShopMain = "";
+        public static string PurchaseSuccessful = "";
+        public static string InsufficientMamooney = "";
+
+    }
     public static class Scrap
     {
         public static string CansSold = "Sprzedano puszki w ilości ";
@@ -26,209 +38,89 @@ namespace Prompts
         public static string Mandat = "";
         public static string Bida = "";
     }
+    public static class General
+    {
+        //tutaj wrzuc lore xd
+        public static string Intro = "";
+    }
+
 }
+
+namespace General {
+    public static class Events
+    {
+        public static void Intro() 
+        {
+            Enemies.Init();
+            Console.WriteLine(Prompts.General.Intro);
+        }
+
+        public static void WhatUDo() { }
+    }
+
+    public static class Enemies
+    {
+        public static Stack<Character> wrogie_zule = new Stack<Character>();
+        public static void Init() { 
+            Character zulMarian = new Character(10, 2, 1, "Marian", Items.EqZuli.EqMarian);
+            Character zulStanislaw = new Character(20, 7, 5, "Stanislaw", Items.EqZuli.EqStanislaw);
+            Character zulMietek = new Character(30, 12, 6, "Stanislaw", Items.EqZuli.EqMietek);
+            wrogie_zule.Push(zulMietek);
+            wrogie_zule.Push(zulStanislaw);
+            wrogie_zule.Push(zulMarian);
+        } 
+    }
+}
+
 
 namespace Items {
-    public class Item { };
-}
-
-namespace Characters
-{
-    public class Character {
+    public class Item
+    {
+        public string name;
+        public int price;
         public int hp;
         public int atk;
         public int def;
-        public string name;
-        public List<Items.Item> items;
-
-        public Character(int zycie, int atak, int obrona, string imie, List<Items.Item> itemki) {
-            hp = zycie; atk = atak; def = obrona; name = imie; items = itemki;
-        }
-        public Character() { }
-    }
-
-    public class MainCharacter : Character 
-    {
-        public MainCharacter()
-        {
-            lvl = 1;
-            atk = 3;
-            def = 1;
-            numOfCans = 0;
-            hp = 10;
-            currItems = new List<Items.Item>();
-            agility = 0;
-            mamoona = 0;
-            placeID = 6;
-        }
-        public int lvl;
-        public int numOfCans;
-        public int agility;
-        List<Items.Item> currItems;
-        public int mamoona;
-        public int placeID;
-
-        public bool Fight(Character chr2)
-        {
-            while (this.hp > 0 && chr2.hp>0) {
-                chr2.hp = chr2.hp - (this.atk-chr2.def);
-                Random rnd = new Random();
-                int roll = rnd.Next(0, 20);
-                if(roll > this.agility) { 
-                    this.hp = this.hp - (chr2.atk-this.def);
-                }
-            }
-            if (this.hp > 0) return true; else return false;
-        }
-
-        public bool Go(int PlaceId)
-        {
-            if (Places.PlacesGraph.CanGo(this.placeID, PlaceId))
-            {
-                this.placeID = PlaceId;
-                System.Console.WriteLine(Prompts.Movement.Moved + Places.PlacesGraph.NameByID(PlaceId));
-                return true;
-            }
-            else System.Console.WriteLine(Prompts.Movement.NotMoved);
-            return false;
-        }
-    }
-}
-
-namespace Places
-{
-    public class PlacesGraph {
-        public static List<Places.Place> places = new List<Places.Place>() { 
-            new Places.MainStreet(),
-            new Places.AlcoStore(),
-            new Places.Scrapyard(),
-            new Places.DiagonalAlly(),
-            new Places.CozyStreet()};
-        public static bool CanGo(int placeid, int destinationid) {
-            if (places[placeid].neighbors.Contains(destinationid)) return true; 
-            else return false;
-        }
-        public static string NameByID(int id)
-        {
-            return places[id].name;
-        }
-    }
-
-    public class Place
-    {
-        public List<int> neighbors;
+        public int agl;
         public int id;
-        public bool areWeHere;
-        public string name;
-
-        public virtual void SpecialF(MainCharacter chr) { }
-    }
-
-    public class MainStreet : Place 
-    { 
-        public MainStreet() {
-            neighbors = new List<int>() { 1, 2, 3, 4, 5 };
-            id = 0;
-            name = "Aleje Spółdzielczości Pracy";
-        }
-        //szukaj puszki
-        public override void SpecialF(MainCharacter chr)
+        public Item(string name, int price, int hp, int atk, int def, int agl, int id)
         {
+            this.name = name;
+            this.price = price;
+            this.hp = hp;
+            this.atk = atk;
+            this.def = def;
+            this.agl = agl;
+            this.id = id;
         }
-    }
+    };
 
-    public class DiagonalAlly : Place 
-    { 
-        public DiagonalAlly() { 
-            neighbors = new List<int>() { 0 };
-            id = 1;
-            name = "Mroczny zaułek";
-        }
-
-        //walcz śmieciu
-        public override void SpecialF(MainCharacter chr)
+    public static class AllItems
+    {
+        public static List<Item> list = new List<Item>()
         {
-        }
-
+            new Item("Butelka 'Taternik'", 1, 0, 2, 0, 0, 0),
+            new Item("Bulka standard", 2, 3, 0, 0, 0, 1),
+            new Item("Bulka deluxe", 5, 10, 0, 0, 1, 2),
+            new Item("Butelka 'Tychy'", 4, 0, 5, 0, 0, 3),
+            new Item("Czapka z daszkiem", 10, 2, 0, 3, 0, 4),
+            new Item("Kurtka 'FBI'", 15, 6, 0, 4, 4, 5),
+            new Item("Butelka 'Wyborna'", 10, 0, 8, 0, 1, 6), 
+            new Item("UNIKAT - Butelka 'Jacek Danielowicz'", 0, 0, 0, 0, 0, -1) 
+        };
     }
     
-    public class AlcoStore : Place
+    public static class EqZuli
     {
-        public AlcoStore() { 
-            neighbors = new List<int>() { 0 };
-            id = 2;
-            name = "Sklep Monopolowy 'Kapsel'";
-        }
-        //odpal sklep
-        public override void SpecialF(MainCharacter chr)
-        {
-        }
-    }
-
-    public class CozyStreet : Place
-    {
-        public CozyStreet() { 
-            neighbors = new List<int>() { 0, 5 };
-            id = 3;
-            name = "Ulica Akacjowa";
-        }
-
-        //zebraj
-        public override void SpecialF(MainCharacter chr)
-        {
-            Random rnd = new Random();
-            int roll = rnd.Next(0, 25);
-            switch (roll)
-            {
-                case < 10:
-                    chr.mamoona += 2;
-                    System.Console.WriteLine(Prompts.Gather.Shot2zl);
-                    break;
-                case < 13:
-                    chr.mamoona += 5;
-                    System.Console.WriteLine(Prompts.Gather.BigShot5zl);
-                    break;
-                case < 21:
-                    System.Console.WriteLine(Prompts.Gather.Bida);
-                    break;
-                case < 25:
-                    chr.mamoona -= 2;
-                    System.Console.WriteLine(Prompts.Gather.Mandat);
-                    chr.Go(4);
-                    break;
-
-            }
-        }
-    }
-
-    public class Scrapyard : Place 
-    { 
-        public Scrapyard() { 
-            neighbors = new List<int>() { 0 };
-            id = 5;
-            name = "Skup złomu 'Pawełek'";
-        }
-
-        //sprzedaj zlom
-        public override void SpecialF(MainCharacter chr)
-        {
-            chr.mamoona += chr.numOfCans * 4;
-            System.Console.WriteLine(Prompts.Scrap.CansSold+chr.numOfCans);
-            chr.numOfCans = 0;
-        }
-    }
-    
-    public class Bench : Place 
-    { 
-        public Bench() { 
-            neighbors = new List<int>() { 0 , 3 };
-            id = 5;
-            name = "Ławeczka";
-        }
-
-        //spanie
-        public override void SpecialF(MainCharacter chr)
-        {
-        }
+        public static List<Item> EqMarian = new List<Item>() {AllItems.list[0]};
+        public static List<Item> EqStanislaw = new List<Item>() {
+            AllItems.list[1],
+            AllItems.list[4]
+        };
+        public static List<Item> EqMietek = new List<Item>() { 
+            AllItems.list[7],
+            AllItems.list[6],
+            AllItems.list[5]
+        };
     }
 }

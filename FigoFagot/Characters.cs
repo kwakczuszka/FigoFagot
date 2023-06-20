@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Characters
+{
+    public class Character
+    {
+        public int hp;
+        public int atk;
+        public int def;
+        public string name;
+        public List<Items.Item> items;
+
+        public Character(int zycie, int atak, int obrona, string imie, List<Items.Item> itemki)
+        {
+            hp = zycie; atk = atak; def = obrona; name = imie; items = itemki;
+        }
+        public Character() { }
+    }
+
+    public class MainCharacter : Character
+    {
+        public MainCharacter(string nam)
+        {
+            name = nam;
+            atk = 3;
+            def = 1;
+            numOfCans = 0;
+            hp = 10;
+            currItems = new List<Items.Item>();
+            agility = 0;
+            mamoona = 0;
+            placeID = 6;
+        }
+        public int lvl;
+        public int numOfCans;
+        public int agility;
+        List<Items.Item> currItems;
+        public int mamoona;
+        public int placeID;
+
+        public bool Fight(Character chr2)
+        {
+            while (this.hp > 0 && chr2.hp > 0)
+            {
+                chr2.hp = chr2.hp - (this.atk - chr2.def);
+                Console.WriteLine(name + " uderza " + chr2.name + " za " + (atk - chr2.def).ToString());
+
+                Random rnd = new Random();
+                int roll = rnd.Next(0, 20);
+                if (roll > this.agility)
+                {
+                    this.hp = this.hp - (chr2.atk - this.def);
+                    Console.WriteLine(chr2.name + " uderza " + name + " za " + (chr2.atk-def).ToString());
+                }
+            }
+            if (this.hp > 0) {
+                this.items.AddRange(chr2.items);
+                return true; } else return false;
+        }
+
+        public bool Go(int PlaceId)
+        {
+            if (Places.PlacesGraph.CanGo(this.placeID, PlaceId))
+            {
+                this.placeID = PlaceId;
+                System.Console.WriteLine(Prompts.Movement.Moved + Places.PlacesGraph.NameByID(PlaceId));
+                return true;
+            }
+            else System.Console.WriteLine(Prompts.Movement.NotMoved);
+            return false;
+        }
+    }
+}
