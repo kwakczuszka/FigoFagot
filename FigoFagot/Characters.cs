@@ -63,11 +63,9 @@ namespace Characters
             if (this.hp > 0) {
                 this.items.AddRange(chr2.items);
                 Console.WriteLine(Prompts.Fight.Victory);
-                PlacesGraph.places[placeID].WhatYuDo(this);
                 return true; } else
             {
                 Console.WriteLine(Prompts.Fight.Defeat);
-                PlacesGraph.places[placeID].WhatYuDo(this);
                 return false;
 
             }

@@ -29,9 +29,9 @@ namespace Prompts
     public static class Shop
     {
         public static string OpenShop = "Wejdz do sklepu";
-        public static string ShopMain = "";
-        public static string PurchaseSuccessful = "";
-        public static string InsufficientMamooney = "";
+        public static string ShopMain = "Yyy... tego no, dzien dobry, ja chcialem kupic, eee...";
+        public static string PurchaseSuccessful = "Dziekuje kierowniku, do widzenia - zakupiono ";
+        public static string InsufficientMamooney = "Oj no ksieciuniu, a na kreche nie da rade? - nie masz tyle kasy";
 
     }
     public static class Scrap

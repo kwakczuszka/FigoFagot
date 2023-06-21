@@ -103,6 +103,7 @@ namespace Places
                     this.SpecialF(chr);
                     break;
             }
+            Console.Clear();
         }
     }
 
@@ -118,8 +119,8 @@ namespace Places
         //walcz śmieciu
         public override void SpecialF(MainCharacter chr)
         {
-            if (chr.Fight(Enemies.wrogie_zule.Peek())) ;// Enemies.wrogie_zule.Pop();
-            else Console.WriteLine();
+            if (chr.Fight(Enemies.wrogie_zule.Peek())) Enemies.wrogie_zule.Pop();
+            WhatYuDo(chr);
         }
 
         public override void WhatYuDo(MainCharacter chr)
@@ -138,6 +139,8 @@ namespace Places
                     this.SpecialF(chr);
                     break;
             }
+            Console.Clear();
+
         }
 
     }
@@ -172,10 +175,10 @@ namespace Places
             }
             else if (stuff[choice - 1].price <= chr.mamoona)
             {
+                System.Console.WriteLine(Prompts.Shop.PurchaseSuccessful +stuff[choice-1].name);
                 chr.items.Add(stuff[choice - 1]);
                 chr.mamoona -= stuff[choice - 1].price;
                 stuff.Remove(stuff[choice - 1]);
-                System.Console.WriteLine(Prompts.Shop.PurchaseSuccessful);
             }
             else { Console.WriteLine(Prompts.Shop.InsufficientMamooney); }
             WhatYuDo(chr);
@@ -197,6 +200,7 @@ namespace Places
                     this.SpecialF(chr);
                     break;
             }
+            Console.Clear();
         }
     }
 
@@ -255,6 +259,7 @@ namespace Places
                     this.SpecialF(chr);
                     break;
             }
+            Console.Clear();
         }
     }
 
@@ -292,6 +297,7 @@ namespace Places
                     this.SpecialF(chr);
                     break;
             }
+            Console.Clear();
         }
     }
 
@@ -330,6 +336,7 @@ namespace Places
                     this.SpecialF(chr);
                     break;
             }
+            Console.Clear();
         }
     }
 }
