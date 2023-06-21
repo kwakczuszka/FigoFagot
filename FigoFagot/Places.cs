@@ -171,6 +171,7 @@ namespace Places
         public override void SpecialF(MainCharacter chr)
         {
             System.Console.WriteLine(Prompts.Shop.ShopMain);
+            Console.WriteLine("Zaskórniaki: \t"+chr.mamoona.ToString());
             Console.WriteLine("0. Opusc sklep");
             for (int i = 0; i < stuff.Count(); i++)
             {

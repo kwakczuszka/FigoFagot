@@ -50,9 +50,15 @@ namespace Characters
 
         public bool Fight(Character chr2)
         {
+            if (hp < maxhp) 
+            {
+                
+            }
             while (this.hp > 0 && chr2.hp > 0)
             {
-                if(chr2.def >= this.atk) { return false; }
+                if(chr2.def >= this.atk) {
+                    Console.WriteLine(Prompts.Fight.Defeat);
+                    return false; }
                 chr2.hp = chr2.hp - (this.atk - chr2.def);
                 Console.WriteLine(name + " uderza " + chr2.name + " za " + (atk - chr2.def).ToString());
 
