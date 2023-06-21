@@ -119,28 +119,35 @@ namespace Places
         //walcz śmieciu
         public override void SpecialF(MainCharacter chr)
         {
-            if (chr.Fight(Enemies.wrogie_zule.Peek())) Enemies.wrogie_zule.Pop();
-            WhatYuDo(chr);
+            if (Enemies.wrogie_zule.Count > 0)
+            {
+                if (chr.Fight(Enemies.wrogie_zule.Peek())) Enemies.wrogie_zule.Pop();
+                WhatYuDo(chr);
+            }
+            else General.Events.Outro();
         }
 
         public override void WhatYuDo(MainCharacter chr)
         {
-            Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
-            Console.WriteLine("2. " + Prompts.Fight.Fajt + Enemies.wrogie_zule.Peek().name);
-            Console.WriteLine("Twoj wybor:");
-            int choice;
-            choice = Int32.Parse(Console.ReadLine());
-            switch (choice)
+            if (Enemies.wrogie_zule.Count()>0)
             {
-                case 1:
-                    chr.Go(0);
-                    break;
-                case 2:
-                    this.SpecialF(chr);
-                    break;
+                Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
+                Console.WriteLine("2. " + Prompts.Fight.Fajt + Enemies.wrogie_zule.Peek().name);
+                Console.WriteLine("Twoj wybor:");
+                int choice;
+                choice = Int32.Parse(Console.ReadLine());
+                switch (choice)
+                {
+                    case 1:
+                        chr.Go(0);
+                        break;
+                    case 2:
+                        this.SpecialF(chr);
+                        break;
+                }
+                Console.Clear();
             }
-            Console.Clear();
-
+            else General.Events.Outro();
         }
 
     }
@@ -171,14 +178,15 @@ namespace Places
             }
             int choice = Int32.Parse(System.Console.ReadLine());
             if (choice == 0) {
-
+                Console.WriteLine("W sumie to nic nie chcialem, do widzenia... albo zapomnialem?");
             }
             else if (stuff[choice - 1].price <= chr.mamoona)
             {
                 System.Console.WriteLine(Prompts.Shop.PurchaseSuccessful +stuff[choice-1].name);
-                chr.items.Add(stuff[choice - 1]);
+                chr.currItems.Add(stuff[choice - 1]);
                 chr.mamoona -= stuff[choice - 1].price;
                 stuff.Remove(stuff[choice - 1]);
+                chr.Equip();
             }
             else { Console.WriteLine(Prompts.Shop.InsufficientMamooney); }
             WhatYuDo(chr);
@@ -313,6 +321,7 @@ namespace Places
         //spanie
         public override void SpecialF(MainCharacter chr)
         {
+            chr.hp = chr.maxhp;
             Console.WriteLine(Prompts.Bench.Sleep);
             WhatYuDo(chr);
         }
@@ -320,7 +329,7 @@ namespace Places
         {
             Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
             Console.WriteLine("2. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(3));
-            Console.WriteLine("3. ");
+            Console.WriteLine("3. Przespij sie (odnowienie HP)");
             Console.WriteLine("Twoj wybor:");
             int choice;
             choice = Int32.Parse(Console.ReadLine());

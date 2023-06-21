@@ -53,6 +53,7 @@ namespace Prompts
         //tutaj wrzuc lore xd
         public static string Intro = "";
         public static string GoSomewhere = "Udaj sie do lokacji ";
+        public static string Epilogue = "Gra ukończona gratulacje historia bla bla bla";
     }
 
     public static class Bench
@@ -72,6 +73,11 @@ namespace General {
             PlacesGraph.places[0].WhatYuDo(chr);
         }
 
+        public static void Outro()
+        {
+            Console.WriteLine(Prompts.General.Epilogue);
+            Console.Read();
+        }
         public static void WhatUDo() { }
     }
 
@@ -81,7 +87,7 @@ namespace General {
         public static void Init() { 
             Character zulMarian = new Character(10, 2, 1, "Marian", Items.EqZuli.EqMarian);
             Character zulStanislaw = new Character(20, 7, 5, "Stanislaw", Items.EqZuli.EqStanislaw);
-            Character zulMietek = new Character(30, 12, 6, "Stanislaw", Items.EqZuli.EqMietek);
+            Character zulMietek = new Character(30, 12, 6, "Mietek - FINALOWY BOSS", Items.EqZuli.EqMietek);
             wrogie_zule.Push(zulMietek);
             wrogie_zule.Push(zulStanislaw);
             wrogie_zule.Push(zulMarian);
@@ -94,15 +100,17 @@ namespace Items {
     public class Item
     {
         public string name;
+        public string category;
         public int price;
         public int hp;
         public int atk;
         public int def;
         public int agl;
         public int id;
-        public Item(string name, int price, int hp, int atk, int def, int agl, int id)
+        public Item(string name, string category, int price, int hp, int atk, int def, int agl, int id)
         {
             this.name = name;
+            this.category = category;
             this.price = price;
             this.hp = hp;
             this.atk = atk;
@@ -116,14 +124,14 @@ namespace Items {
     {
         public static List<Item> list = new List<Item>()
         {
-            new Item("Butelka 'Taternik'", 1, 0, 2, 0, 0, 0),
-            new Item("Bulka standard", 2, 3, 0, 0, 0, 1),
-            new Item("Bulka deluxe", 5, 10, 0, 0, 1, 2),
-            new Item("Butelka 'Tychy'", 4, 0, 5, 0, 0, 3),
-            new Item("Czapka z daszkiem", 10, 2, 0, 3, 0, 4),
-            new Item("Kurtka 'FBI'", 15, 6, 0, 4, 4, 5),
-            new Item("Butelka 'Wyborna'", 10, 0, 8, 0, 1, 6), 
-            new Item("UNIKAT - Butelka 'Jacek Danielowicz'", 0, 0, 0, 0, 0, -1) 
+            new Item("Butelka 'Taternik'", "melee",1, 0, 2, 0, 0, 0),
+            new Item("Bulka standard", "defense",2, 3, 0, 0, 0, 1),
+            new Item("Bulka deluxe", "defense", 5, 10, 1, 1, 1, 2),
+            new Item("Butelka 'Tychy'", "melee", 4, 0, 5, 0, 0, 3),
+            new Item("Czapka z daszkiem", "cloak", 10, 2, 0, 3, 0, 4),
+            new Item("Kurtka 'FBI'", "cloak", 15, 6, 0, 4, 4, 5),
+            new Item("Butelka 'Wyborna'", "melee", 10, 0, 8, 0, 1, 6), 
+            new Item("UNIKAT - Butelka 'Jacek Danielowicz'", "epic", 0, 0, 0, 0, 0, -1) 
         };
     }
     

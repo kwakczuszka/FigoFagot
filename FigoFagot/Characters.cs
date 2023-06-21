@@ -1,4 +1,5 @@
-﻿using Places;
+﻿using Items;
+using Places;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace Characters
             def = 1;
             numOfCans = 0;
             hp = 10;
+            maxhp = 10;
             currItems = new List<Items.Item>();
             items = new List<Items.Item>();
             agility = 0;
@@ -41,14 +43,16 @@ namespace Characters
         public int lvl;
         public int numOfCans;
         public int agility;
-        List<Items.Item> currItems;
+        public List<Items.Item> currItems;
         public int mamoona;
         public int placeID;
+        public int maxhp;
 
         public bool Fight(Character chr2)
         {
             while (this.hp > 0 && chr2.hp > 0)
             {
+                if(chr2.def >= this.atk) { return false; }
                 chr2.hp = chr2.hp - (this.atk - chr2.def);
                 Console.WriteLine(name + " uderza " + chr2.name + " za " + (atk - chr2.def).ToString());
 
@@ -61,8 +65,14 @@ namespace Characters
                 }
             }
             if (this.hp > 0) {
-                this.items.AddRange(chr2.items);
+                this.currItems = chr2.items;
                 Console.WriteLine(Prompts.Fight.Victory);
+                Console.WriteLine("Zdobyte przedmioty (wyposażono automatycznie):");
+                foreach (Item it in currItems) {
+                    Console.WriteLine(it.name);
+                }
+                Equip();
+
                 return true; } else
             {
                 Console.WriteLine(Prompts.Fight.Defeat);
@@ -84,6 +94,19 @@ namespace Characters
             else System.Console.WriteLine(Prompts.Movement.NotMoved);
             PlacesGraph.places[this.placeID].WhatYuDo(this);
             return false;
+        }
+
+        public void Equip()
+        {
+            foreach(Item it in currItems)
+            {
+                this.def += it.def;
+                this.atk += it.atk;
+                this.maxhp += it.hp;
+                this.agility += it.agl;
+                items.Add(it);
+            }
+            currItems.Clear();
         }
     }
 }
