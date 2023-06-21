@@ -186,6 +186,11 @@ namespace Places
                 chr.currItems.Add(stuff[choice - 1]);
                 chr.mamoona -= stuff[choice - 1].price;
                 stuff.Remove(stuff[choice - 1]);
+                Console.WriteLine("Zakupione przedmioty (wyposażono automatycznie):");
+                foreach (Item it in chr.currItems)
+                {
+                    Console.WriteLine(it.name);
+                }
                 chr.Equip();
             }
             else { Console.WriteLine(Prompts.Shop.InsufficientMamooney); }
