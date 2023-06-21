@@ -5,5 +5,5 @@ using General;
 using System.Reflection;
 
 MainCharacter figo = new MainCharacter("Figo");
-Events.Intro();
+Events.Intro(figo);
 

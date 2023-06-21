@@ -1,4 +1,6 @@
 ﻿using Characters;
+using General;
+using Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +38,7 @@ namespace Places
         public string name;
 
         public virtual void SpecialF(MainCharacter chr) { }
+        public virtual void WhatYuDo(MainCharacter chr) { }
     }
 
     public class MainStreet : Place
@@ -65,6 +68,41 @@ namespace Places
                     System.Console.WriteLine(Prompts.MainSt.noCan);
                     break;
             }
+            WhatYuDo(chr);
+        }
+
+        public override void WhatYuDo(MainCharacter chr)
+        {
+            Console.WriteLine("1. " + Prompts.General.GoSomewhere+PlacesGraph.NameByID(1));
+            Console.WriteLine("2. " + Prompts.General.GoSomewhere+PlacesGraph.NameByID(2));
+            Console.WriteLine("3. " + Prompts.General.GoSomewhere +PlacesGraph.NameByID(3));
+            Console.WriteLine("4. " + Prompts.General.GoSomewhere +PlacesGraph.NameByID(4));
+            Console.WriteLine("5. " + Prompts.General.GoSomewhere +PlacesGraph.NameByID(5));
+            Console.WriteLine("6. " + Prompts.Scrap.GetCans);
+            Console.WriteLine("Twoj wybor:");
+            int choice;
+            choice = Int32.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    chr.Go(1);
+                    break;
+                case 2:
+                    chr.Go(2);
+                    break; 
+                case 3:
+                    chr.Go(3);
+                    break;
+                case 4:
+                    chr.Go(4);
+                    break;
+                case 5:
+                    chr.Go(5);
+                    break;
+                case 6:
+                    this.SpecialF(chr);
+                    break;
+            }
         }
     }
 
@@ -80,6 +118,26 @@ namespace Places
         //walcz śmieciu
         public override void SpecialF(MainCharacter chr)
         {
+            if (chr.Fight(Enemies.wrogie_zule.Peek())) ;// Enemies.wrogie_zule.Pop();
+            else Console.WriteLine();
+        }
+
+        public override void WhatYuDo(MainCharacter chr)
+        {
+            Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
+            Console.WriteLine("2. " + Prompts.Fight.Fajt + Enemies.wrogie_zule.Peek().name);
+            Console.WriteLine("Twoj wybor:");
+            int choice;
+            choice = Int32.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    chr.Go(0);
+                    break;
+                case 2:
+                    this.SpecialF(chr);
+                    break;
+            }
         }
 
     }
@@ -92,23 +150,52 @@ namespace Places
             neighbors = new List<int>() { 0 };
             id = 2;
             name = "Sklep Monopolowy 'Kapsel'";
-            stuff = new List<Items.Item>() { };
+            stuff = new List<Items.Item>() {
+                AllItems.list[1],
+                AllItems.list[2],
+                AllItems.list[3],
+                AllItems.list[6]
+            };
         }
         //odpal sklep
         public override void SpecialF(MainCharacter chr)
         {
             System.Console.WriteLine(Prompts.Shop.ShopMain);
+            Console.WriteLine("0. Opusc sklep");
             for (int i = 0; i < stuff.Count(); i++)
             {
-                System.Console.WriteLine($"\n{i + 1}. {stuff[i].ToString}");
+                System.Console.WriteLine($"\n{i + 1}. {stuff[i].name}, \tcena: {stuff[i].price}");
             }
             int choice = Int32.Parse(System.Console.ReadLine());
-            if (stuff[choice - 1].price <= chr.mamoona)
+            if (choice == 0) {
+
+            }
+            else if (stuff[choice - 1].price <= chr.mamoona)
             {
                 chr.items.Add(stuff[choice - 1]);
                 chr.mamoona -= stuff[choice - 1].price;
                 stuff.Remove(stuff[choice - 1]);
                 System.Console.WriteLine(Prompts.Shop.PurchaseSuccessful);
+            }
+            else { Console.WriteLine(Prompts.Shop.InsufficientMamooney); }
+            WhatYuDo(chr);
+
+        }
+        public override void WhatYuDo(MainCharacter chr)
+        {
+            Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
+            Console.WriteLine("2. " + Prompts.Shop.OpenShop);
+            Console.WriteLine("Twoj wybor:");
+            int choice;
+            choice = Int32.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    chr.Go(0);
+                    break;
+                case 2:
+                    this.SpecialF(chr);
+                    break;
             }
         }
     }
@@ -146,6 +233,28 @@ namespace Places
                     chr.Go(5);
                     break;
             }
+            WhatYuDo(chr);
+        }
+        public override void WhatYuDo(MainCharacter chr)
+        {
+            Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
+            Console.WriteLine("2. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(5));
+            Console.WriteLine("3. " + Prompts.Gather.ProbujZebrac);
+            Console.WriteLine("Twoj wybor:");
+            int choice;
+            choice = Int32.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    chr.Go(0);
+                    break;
+                case 2:
+                    chr.Go(5);
+                    break;
+                case 3:
+                    this.SpecialF(chr);
+                    break;
+            }
         }
     }
 
@@ -161,9 +270,28 @@ namespace Places
         //sprzedaj zlom
         public override void SpecialF(MainCharacter chr)
         {
-            chr.mamoona += chr.numOfCans * 4;
+            chr.mamoona += chr.numOfCans;
             System.Console.WriteLine(Prompts.Scrap.CansSold + chr.numOfCans.ToString());
             chr.numOfCans = 0;
+            WhatYuDo(chr);
+        }
+
+        public override void WhatYuDo(MainCharacter chr)
+        {
+            Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
+            Console.WriteLine("2. " + Prompts.Scrap.SellCans);
+            Console.WriteLine("Twoj wybor:");
+            int choice;
+            choice = Int32.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    chr.Go(0);
+                    break;
+                case 2:
+                    this.SpecialF(chr);
+                    break;
+            }
         }
     }
 
@@ -179,7 +307,29 @@ namespace Places
         //spanie
         public override void SpecialF(MainCharacter chr)
         {
-
+            Console.WriteLine(Prompts.Bench.Sleep);
+            WhatYuDo(chr);
+        }
+        public override void WhatYuDo(MainCharacter chr)
+        {
+            Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
+            Console.WriteLine("2. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(3));
+            Console.WriteLine("3. ");
+            Console.WriteLine("Twoj wybor:");
+            int choice;
+            choice = Int32.Parse(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    chr.Go(0);
+                    break;
+                case 2:
+                    chr.Go(3);
+                    break;
+                case 3:
+                    this.SpecialF(chr);
+                    break;
+            }
         }
     }
 }

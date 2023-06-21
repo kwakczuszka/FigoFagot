@@ -1,4 +1,5 @@
 ﻿using Characters;
+using Places;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +11,24 @@ namespace Prompts
 {
     public static class MainSt
     {
-        public static string oneCan = "";
-        public static string twoCans = "";
-        public static string noCan = "";
+        public static string oneCan = "Znaleziono 1 puszke!";
+        public static string twoCans = "Znaleziono 2 puszki!";
+        public static string noCan = "Nima puszek :(";
     }
     public static class Movement
     {
         public static string Moved = "Przemieszczono się do lokacji ";
         public static string NotMoved = "Nie udało się przemieścić";
     }
-    public static class Fight{ }
+    public static class Fight
+    {
+        public static string Fajt = "Walcz z wrogim zulem - ";
+        public static string Victory = "Walka wygrana!";
+        public static string Defeat = "Walka Przegrana!";
+    }
     public static class Shop
     {
+        public static string OpenShop = "Wejdz do sklepu";
         public static string ShopMain = "";
         public static string PurchaseSuccessful = "";
         public static string InsufficientMamooney = "";
@@ -30,6 +37,8 @@ namespace Prompts
     public static class Scrap
     {
         public static string CansSold = "Sprzedano puszki w ilości ";
+        public static string GetCans = "Szukaj puszek";
+        public static string SellCans = "Sprzedaj puszki";
     }
     public static class Gather 
     {
@@ -37,11 +46,18 @@ namespace Prompts
         public static string BigShot5zl = "";
         public static string Mandat = "";
         public static string Bida = "";
+        public static string ProbujZebrac = "Zebraj drobne od ludzi";
     }
     public static class General
     {
         //tutaj wrzuc lore xd
         public static string Intro = "";
+        public static string GoSomewhere = "Udaj sie do lokacji ";
+    }
+
+    public static class Bench
+    {
+        public static string Sleep = "Przespales sie, sen to zdrowie!";
     }
 
 }
@@ -49,10 +65,11 @@ namespace Prompts
 namespace General {
     public static class Events
     {
-        public static void Intro() 
+        public static void Intro(MainCharacter chr) 
         {
             Enemies.Init();
             Console.WriteLine(Prompts.General.Intro);
+            PlacesGraph.places[0].WhatYuDo(chr);
         }
 
         public static void WhatUDo() { }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Places;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -32,9 +33,10 @@ namespace Characters
             numOfCans = 0;
             hp = 10;
             currItems = new List<Items.Item>();
+            items = new List<Items.Item>();
             agility = 0;
             mamoona = 0;
-            placeID = 6;
+            placeID = 0;
         }
         public int lvl;
         public int numOfCans;
@@ -60,7 +62,16 @@ namespace Characters
             }
             if (this.hp > 0) {
                 this.items.AddRange(chr2.items);
-                return true; } else return false;
+                Console.WriteLine(Prompts.Fight.Victory);
+                PlacesGraph.places[placeID].WhatYuDo(this);
+                return true; } else
+            {
+                Console.WriteLine(Prompts.Fight.Defeat);
+                PlacesGraph.places[placeID].WhatYuDo(this);
+                return false;
+
+            }
+
         }
 
         public bool Go(int PlaceId)
@@ -69,9 +80,11 @@ namespace Characters
             {
                 this.placeID = PlaceId;
                 System.Console.WriteLine(Prompts.Movement.Moved + Places.PlacesGraph.NameByID(PlaceId));
+                PlacesGraph.places[placeID].WhatYuDo(this);
                 return true;
             }
             else System.Console.WriteLine(Prompts.Movement.NotMoved);
+            PlacesGraph.places[this.placeID].WhatYuDo(this);
             return false;
         }
     }
