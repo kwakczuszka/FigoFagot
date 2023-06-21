@@ -106,6 +106,7 @@ namespace Characters
                 this.agility += it.agl;
                 items.Add(it);
             }
+            hp = maxhp;
             currItems.Clear();
         }
     }
