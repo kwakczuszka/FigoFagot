@@ -31,30 +31,55 @@ namespace Items
     {
         public static List<Item> list = new List<Item>()
         {
-            new Item("Butelka 'Taternik'", 1, 0, 2, 0, 0, 0),
-            new Item("Bulka standard", 2, 3, 0, 0, 0, 1),
-            new Item("Bulka deluxe", 5, 10, 1, 1, 1, 2),
-            new Item("Butelka 'Tychy'", 4, 0, 5, 0, 0, 3),
-            new Item("Czapka z daszkiem", 10, 2, 0, 3, 0, 4),
-            new Item("Kurtka 'FBI'", 15, 6, 0, 4, 4, 5),
-            new Item("Butelka 'Wyborna'", 10, 0, 8, 0, 1, 6),
+            new Item("Butelka 'Taternik'", 48, 0, 2, 0, 0, 0),
+            new Item("Bulka standard", 15, 3, 0, 0, 0, 1),
+            new Item("Bulka deluxe", 32, 10, 1, 1, 1, 2),
+            new Item("Butelka 'Tychy'", 58, 0, 5, 0, 0, 3),
+            new Item("Butelka 'Wyborna'", 102, 0, 7, 0, 1, 4),
+            new Item("Puszka 'Harnold'", 65, 2, 4, 0, 1, 5),
+            new Item("Papierosy 'Wielbłądy'", 130, 0, 2, 0, 4, 6),
+            new Item("Gazeta 'Porządny obywatel'", 25, 4, 0, 0, 2, 7),
+            new Item("Kurtka 'FBI'", 0, 6, 0, 2, 2, 8),
+            new Item("Różowy parasol", 0, 0, 2, 3, 1, 9),
+            new Item("Wygnieciony śpiwór'", 0, 10, 0, 2, 0, 10),
+            new Item("Zardzewiały scyzoryk", 0, 0, 5, 0, 0, 11),
+            new Item("Uszkodzona deska do prasowania", 0, 0, 8, 12, 0, 12),
+            new Item("Gumowy kapeć", 0, 0, 3, 1, 1, 13),
+            new Item("Plik banknotów", 0, 0, 0, 0, 0,-2),
             new Item("UNIKAT - Butelka 'Jacek Danielowicz'", 0, -1, 0, -1, -1, -1)
         };
     }
 
     public static class EqZuli
     {
-        public static List<Item> EqMarian = new List<Item>() { AllItems.list[0] };
+        public static List<Item> EqMarian = new List<Item>() 
+        {
+            AllItems.list[8],
+        };
         public static List<Item> EqStanislaw = new List<Item>()
         {
-            AllItems.list[1],
-            AllItems.list[4]
+            AllItems.list[9],
+        };
+        public static List<Item> EqBodzio = new List<Item>() 
+        { 
+            AllItems.list[10] 
+        };
+        public static List<Item> EqFraniu = new List<Item>()
+        {
+            AllItems.list[11]
+        };
+        public static List<Item> EqZbychu = new List<Item>()
+        {
+            AllItems.list[12]
+        };
+        public static List<Item> EqAlojzy = new List<Item>()
+        {
+            AllItems.list[13]
         };
         public static List<Item> EqMietek = new List<Item>()
         {
-            AllItems.list[7],
-            AllItems.list[6],
-            AllItems.list[5]
+            AllItems.list[14],
+            AllItems.list[15]
         };
     }
 }

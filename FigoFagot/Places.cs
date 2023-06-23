@@ -3,7 +3,10 @@ using General;
 using Items;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +16,12 @@ namespace Places
     public class PlacesGraph
     {
         public static List<Places.Place> places = new List<Places.Place>() {
-            new Places.MainStreet(),
-            new Places.DiagonalAlly(),
-            new Places.AlcoStore(),
-            new Places.CozyStreet(),
-            new Places.Scrapyard(),
-            new Places.Bench()};
+            new Place.MainStreet(),
+            new Place.DiagonalAlly(),
+            new Place.AlcoStore(),
+            new Place.CozyStreet(),
+            new Place.Scrapyard(),
+            new Place.Bench()};
         public static bool CanGo(int placeid, int destinationid)
         {
             if (places[placeid].neighbors.Contains(destinationid)) return true;
@@ -35,10 +38,36 @@ namespace Places
         public List<int> neighbors;
         public int id;
         public bool areWeHere;
-        public string name;
+        public string? name;
 
         public virtual void SpecialF(MainCharacter chr) { }
         public virtual void WhatYuDo(MainCharacter chr) { }
+
+        
+        public static int Secure(int min, int max) 
+        {
+            try
+            {
+                while (true)
+                {
+                    int ss = Int32.Parse(Console.ReadLine());
+                    if (ss <= max && ss >= min)
+                    {
+                        return ss;
+                    }
+                    else
+                    {
+                        Console.WriteLine("zły znak!");
+                        return Secure(min, max);
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("zły znak!");
+                return Secure(min, max);
+            }
+       
     }
 
     public class MainStreet : Place
@@ -80,29 +109,48 @@ namespace Places
             Console.WriteLine("5. " + Prompts.General.GoSomewhere +PlacesGraph.NameByID(5));
             Console.WriteLine("6. " + Prompts.Scrap.GetCans);
             Console.WriteLine("Twoj wybor:");
-            int choice;
-            choice = Int32.Parse(Console.ReadLine());
-            switch (choice)
+            
+            try
             {
-                case 1:
-                    chr.Go(1);
-                    break;
-                case 2:
-                    chr.Go(2);
-                    break; 
-                case 3:
-                    chr.Go(3);
-                    break;
-                case 4:
-                    chr.Go(4);
-                    break;
-                case 5:
-                    chr.Go(5);
-                    break;
-                case 6:
-                    this.SpecialF(chr);
-                    break;
+                int choice = Int32.Parse(Console.ReadLine());
+                if (choice > 0 && choice < 7) 
+                {
+                    switch (choice)
+                    {
+                        case 1:
+                            chr.Go(1);
+                            break;
+                        case 2:
+                            chr.Go(2);
+                            break;
+                        case 3:
+                            chr.Go(3);
+                            break;
+                        case 4:
+                            chr.Go(4);
+                            break;
+                        case 5:
+                            chr.Go(5);
+                            break;
+                        case 6:
+                            this.SpecialF(chr);
+                            break;
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("zła liczba!");
+                    WhatYuDo(chr);
+                }
             }
+            catch (FormatException)
+            {
+                Console.WriteLine("zły znak!");
+                WhatYuDo(chr);
+            }
+
+            
             Console.Clear();
         }
     }
@@ -135,7 +183,7 @@ namespace Places
                 Console.WriteLine("2. " + Prompts.Fight.Fajt + Enemies.wrogie_zule.Peek().name);
                 Console.WriteLine("Twoj wybor:");
                 int choice;
-                choice = Int32.Parse(Console.ReadLine());
+                    choice = Place.Secure(1, 2);
                 switch (choice)
                 {
                     case 1:
@@ -161,25 +209,43 @@ namespace Places
             id = 2;
             name = "Sklep Monopolowy 'Kapsel'";
             stuff = new List<Items.Item>() {
+                AllItems.list[0],
                 AllItems.list[1],
                 AllItems.list[2],
                 AllItems.list[3],
-                AllItems.list[6]
+                AllItems.list[4],
+                AllItems.list[5],
+                AllItems.list[6],
+                AllItems.list[7]
             };
         }
-        //odpal sklep
-        public override void SpecialF(MainCharacter chr)
-        {
+            //odpal sklep
+      
+        
+
+         public override void SpecialF(MainCharacter chr) 
+        { 
+        
             System.Console.WriteLine(Prompts.Shop.ShopMain);
             Console.WriteLine("Zaskórniaki: \t"+chr.mamoona.ToString());
-            Console.WriteLine("0. Opusc sklep");
+            Console.WriteLine("0. Opuść sklep");
             for (int i = 0; i < stuff.Count(); i++)
             {
                 System.Console.WriteLine($"\n{i + 1}. {stuff[i].name}, \tcena: {stuff[i].price}");
             }
-            int choice = Int32.Parse(System.Console.ReadLine());
+            int choice;  
+                while (true)
+                {
+                    try
+                    {
+                        choice = Int32.Parse(System.Console.ReadLine());
+                    if (choice < stuff.Count) ;
+                            break;
+                    }
+                    catch { Console.WriteLine("zły znak!"); }
+                }
             if (choice == 0) {
-                Console.WriteLine("W sumie to nic nie chcialem, do widzenia... albo zapomnialem?");
+                Console.WriteLine("W sumie to nic nie chciałem, do widzenia... albo zapomniałem?");
             }
             else if (stuff[choice - 1].price <= chr.mamoona)
             {
@@ -204,8 +270,8 @@ namespace Places
             Console.WriteLine("2. " + Prompts.Shop.OpenShop);
             Console.WriteLine("Twoj wybor:");
             int choice;
-            choice = Int32.Parse(Console.ReadLine());
-            switch (choice)
+            choice = Place.Secure(1, 2);
+                switch (choice)
             {
                 case 1:
                     chr.Go(0);
@@ -246,7 +312,7 @@ namespace Places
                     System.Console.WriteLine(Prompts.Gather.Bida);
                     break;
                 case < 25:
-                    chr.mamoona -= 2;
+                    chr.mamoona -= 7;
                     System.Console.WriteLine(Prompts.Gather.Mandat);
                     chr.Go(5);
                     break;
@@ -260,8 +326,8 @@ namespace Places
             Console.WriteLine("3. " + Prompts.Gather.ProbujZebrac);
             Console.WriteLine("Twoj wybor:");
             int choice;
-            choice = Int32.Parse(Console.ReadLine());
-            switch (choice)
+            choice = Place.Secure(1, 3);
+                switch (choice)
             {
                 case 1:
                     chr.Go(0);
@@ -299,10 +365,10 @@ namespace Places
         {
             Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
             Console.WriteLine("2. " + Prompts.Scrap.SellCans);
-            Console.WriteLine("Twoj wybor:");
+            Console.WriteLine("Twój wybór:");
             int choice;
-            choice = Int32.Parse(Console.ReadLine());
-            switch (choice)
+            choice = Place.Secure(1, 2);
+                switch (choice)
             {
                 case 1:
                     chr.Go(0);
@@ -335,11 +401,11 @@ namespace Places
         {
             Console.WriteLine("1. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(0));
             Console.WriteLine("2. " + Prompts.General.GoSomewhere + PlacesGraph.NameByID(3));
-            Console.WriteLine("3. Przespij sie (odnowienie HP)");
-            Console.WriteLine("Twoj wybor:");
+            Console.WriteLine("3. Prześpij sie (odnowienie HP)");
+            Console.WriteLine("Twój wybór:");
             int choice;
-            choice = Int32.Parse(Console.ReadLine());
-            switch (choice)
+            choice = Place.Secure(1, 3);
+                switch (choice)
             {
                 case 1:
                     chr.Go(0);
@@ -354,4 +420,4 @@ namespace Places
             Console.Clear();
         }
     }
-}
+}}
